@@ -31,4 +31,7 @@ if uploaded_file is not None:
 
             res_2 = requests.get(f'{URL}/predict?filename={filename}')
             response_body_2 = res_2.json()
-            st.write(response_body['data'])
+            st.write(response_body_2['data'])
+
+            res_3 = requests.get(f'{URL}/processed_image?filename={filename}')
+            st.image(res_3.content)
