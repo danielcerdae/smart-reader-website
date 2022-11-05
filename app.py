@@ -1,6 +1,7 @@
 from io import StringIO
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 import datetime
 import os
 import time
@@ -116,6 +117,18 @@ with st.container():
                         ).set_index("Id")
 
                         st.dataframe(df)
+
+                        category_count_df=df.groupby(by=['Category'])['Score'].count().reset_index(name='Count')
+                        category_count_df['Percentage']=100*category_count_df['Count']/category_count_df['Count'].sum()
+                        #Grafico Donuts
+                        fig = px.pie(
+                            hole=0.2,
+                            labels=category_count_df['Category'],
+                            names=category_count_df['Percentage'],
+                            title='Elements found Drawing'
+                        )
+                        st.plotly_chart(fig)
+
 
                         col1, col2 = st.columns(2, gap="large")
 
