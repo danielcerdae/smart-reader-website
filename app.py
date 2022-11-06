@@ -2,6 +2,7 @@ from io import StringIO
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.figure_factory as ff
 import datetime
 import os
 import time
@@ -37,7 +38,7 @@ with st.container():
         st.markdown(
             """
         ###### **Automatically identifies piping elements**
-        ▶️ Valves : Ball, Butterfly, Check, Gate
+        ▶️ Valves : Ball, Butterfly, Check, Gate \n
         ▶️ Centrifugal Pumps
         """
         )
@@ -116,18 +117,42 @@ with st.container():
                             }
                         ).set_index("Id")
 
-                        st.dataframe(df)
+                        #st.dataframe(df)
 
                         category_count_df=df.groupby(by=['Category'])['Score'].count().reset_index(name='Count')
                         category_count_df['Percentage']=100*category_count_df['Count']/category_count_df['Count'].sum()
-                        #Grafico Donuts
-                        fig = px.pie(
-                            hole=0.2,
-                            labels=category_count_df['Category'],
-                            names=category_count_df['Percentage'],
-                            title='Elements found Drawing'
-                        )
-                        st.plotly_chart(fig)
+                        #st.dataframe(category_count_df)
+
+                        st.header('Elements found in this Drawing')
+                        col1, col2 = st.columns(2, gap="medium")
+
+                        with col1:
+                            #Bar chart
+                            fig=px.bar(
+                                category_count_df,
+                                x='Category',
+                                y='Count',
+                                text_auto='.2s'
+                            )
+                            fig.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
+                            fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+                            st.markdown(""" ##### **Count per Elements**""")
+                            st.plotly_chart(fig)
+
+                        with col2:
+                        #Pie chart
+                            fig=go.Figure(
+                                go.Pie(
+                                    labels=category_count_df['Category'],
+                                    values=(category_count_df['Percentage']),
+                                    hoverinfo='label+percent',
+                                ))
+                            fig.update_traces(textposition='inside', textinfo='percent')
+                            st.markdown(""" ##### **Distribution of Elements (%)**""")
+                            st.plotly_chart(fig)
+
+
+
 
 
                         col1, col2 = st.columns(2, gap="large")
@@ -150,15 +175,6 @@ with st.container():
                         with col2:
                             pass
 
-
-
-                    col1, col2, col3 = st.columns(3)
-
-                    with col1:
-                        st.image("https://static.streamlit.io/examples/cat.jpg")
-
-                    with col2:
-                        st.image("https://static.streamlit.io/examples/dog.jpg")
 
 
 col4, col5, col6, col7 = st.columns([1, 20, 1, 1])
