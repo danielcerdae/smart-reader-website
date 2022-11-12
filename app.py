@@ -7,12 +7,19 @@ from st_aggrid import GridOptionsBuilder, AgGrid
 from st_aggrid.shared import JsCode
 import base64
 import os
+from google.oauth2 import service_account
 from google.cloud import storage
+
 
 st.set_page_config(
     page_title="Smart-Reader",
     page_icon="static/images/smart-reader-logo.png",
     layout="wide",
+)
+
+
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"]
 )
 
 URL = os.environ.get("BASE_URL")
@@ -245,7 +252,8 @@ with st.container():
 
                 @st.cache
                 def download_blob(bucket_name, source_blob_name, destination_filename):
-                    storage_client = storage.Client()
+
+                    storage_client = storage.Client(credentials=credentials)
 
                     bucket = storage_client.bucket(bucket_name)
                     blob = bucket.blob(source_blob_name)
