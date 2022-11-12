@@ -2,3 +2,4 @@
 .env
 .envrc
 application-credentials.json
+.streamlit.secrets.toml
