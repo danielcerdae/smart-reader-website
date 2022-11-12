@@ -3,3 +3,4 @@ plotly
 pandas
 gcloud
 google-cloud-storage
+streamlit-aggrid
