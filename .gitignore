@@ -2,4 +2,5 @@
 .env
 .envrc
 application-credentials.json
-.streamlit.secrets.toml
+.streamlit/secrets.toml
+.gitpod.yml

@@ -27,28 +27,26 @@ URL = os.environ.get("BASE_URL")
 
 with st.container():
 
-    col1, col2, col3 = st.columns([3, 7, 7])
+    col1, col2 = st.columns([3, 14])
 
     with col1:
-        st.image("static/images/smart-reader-logo.png", width=325)
+        st.image("static/images/smart-reader-logo.png", use_column_width="auto")
 
     with col2:
         st.markdown(
             """
                     ## P&ID Smart Reader
-                    #### Online tool to retrieve data from P&ID diagrams 🚀
+                    #### Tool to retrieve data from Piping and Instrumentation Diagrams 🚀
                     The model automatically detects piping elements from engineering drawings. It has been trained to identify **Centrifugal Pumps**, **Butterfly Valves**, **Check Valves** and **Gate Valves**.
                     """
         )
 
-    with col3:
-        pass
-
-    st.write("##")
+    url = "https://drive.google.com/drive/folders/1gKG3jGuJSsnw-GKD8yBgkjSSY1GZlghW?usp=sharing"
+    st.info("Would like to try the tool? Use these [sample diagrams](%s)" % url)
 
     st.markdown("### Upload a file")
 
-    uploaded_file = st.file_uploader(label="", label_visibility="collapsed")
+    uploaded_file = st.file_uploader(label="", label_visibility="collapsed", type="pdf")
 
     with st.expander("Model settings"):
         confidence_threshold = st.slider(
@@ -126,7 +124,7 @@ with st.container():
 
                 with col1:
                     st.markdown("#")
-                    st.markdown("### Results are ready 🔎")
+                    st.markdown("### Results ready 🔎")
                     st.markdown("#")
                     st.markdown("###")
 
@@ -273,7 +271,7 @@ with st.container():
                     download_blob(bucket_name, source_blob_name, destination_filename)
                     csv = convert_df(df)
 
-                st.info("The results are ready to be downloaded")
+                st.info("The results can be downloaded below")
 
                 st.markdown("#####")
 
